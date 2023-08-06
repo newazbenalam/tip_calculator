@@ -23,6 +23,7 @@ class _TextFieldDoubleState extends State<TextFieldDouble> {
       controller: widget.textInputController,
       key: widget.fieldKey,
       keyboardType: TextInputType.number,
+      // autofocus: true,
       decoration: InputDecoration(
         hintText: widget.title,
         hintStyle: const TextStyle(color: textLightBlack, fontSize: 14),
@@ -57,13 +58,13 @@ class _TextFieldDoubleState extends State<TextFieldDouble> {
         widget.textInputController.selection = TextSelection.fromPosition(
             TextPosition(offset: widget.textInputController.text.length));
       },
-      onSaved: (value) {
-        setState(() {
-          widget.textInputController.text = value.toString();
-          // widget.variable = double.parse(widget.textInputController.text);
-          debugPrint(widget.textInputController.text);
-        });
-      },
+      // onSaved: (value) {
+      //   setState(() {
+      //     widget.textInputController.text = value.toString();
+      //     // widget.variable = double.parse(widget.textInputController.text);
+      //     debugPrint(widget.textInputController.text);
+      //   });
+      // },
       onEditingComplete: () {
         setState(() {
           // widget.variable = double.parse(widget.textInputController.text);
