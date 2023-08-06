@@ -5,8 +5,13 @@ import 'package:tip_calculator/widgets/text_field.dart';
 class HomePage extends StatefulWidget {
   HomePage({super.key, required this.title});
   final String title;
-  final TextEditingController textInputController = TextEditingController();
   static double totalBill = 0.00;
+  final TextEditingController textInputControllerTotalBill =
+      TextEditingController();
+  final TextEditingController textInputControllerPercentage =
+      TextEditingController();
+  final TextEditingController textInputControllerPeople =
+      TextEditingController();
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -102,7 +107,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const Spacer(),
+            const Spacer(
+              flex: 1,
+            ),
             Title(title: "Total Bill"),
             // const SizedBox(
             //   height: 5,
@@ -164,17 +171,17 @@ class _HomePageState extends State<HomePage> {
             // ),
             TextFieldDouble(
                 title: "Please enter total bill amount",
-                textInputController: widget.textInputController,
+                textInputController: widget.textInputControllerTotalBill,
                 iconData: Icon(Icons.attach_money)),
             Title(title: "Tip percentage"),
             TextFieldDouble(
-                title: "Please enter total bill amount",
-                textInputController: widget.textInputController,
+                title: "Please emter tip percentage",
+                textInputController: widget.textInputControllerPercentage,
                 iconData: Icon(Icons.percent_outlined)),
             Title(title: "Number of people"),
             TextFieldDouble(
-              title: "Please enter total bill amount",
-              textInputController: widget.textInputController,
+              title: "Please enter number of people",
+              textInputController: widget.textInputControllerPeople,
             ),
           ],
         ),
