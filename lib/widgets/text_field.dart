@@ -9,7 +9,7 @@ class TextFieldDouble extends StatefulWidget {
       this.iconData});
   final Icon? iconData;
   final TextEditingController textInputController;
-  final GlobalKey fieldKey = GlobalKey();
+  // final GlobalKey fieldKey = GlobalKey();
   final String title;
 
   @override
@@ -21,7 +21,7 @@ class _TextFieldDoubleState extends State<TextFieldDouble> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.textInputController,
-      key: widget.fieldKey,
+      // key: widget.fieldKey,
       keyboardType: TextInputType.number,
       // autofocus: true,
       decoration: InputDecoration(
@@ -30,7 +30,7 @@ class _TextFieldDoubleState extends State<TextFieldDouble> {
         suffixIcon: widget.iconData ?? Text(""),
         filled: true,
         fillColor: containerColor,
-        iconColor: textLightBlack,
+        iconColor: textLightBlack.withOpacity(0.75),
         border: OutlineInputBorder(
           borderSide: const BorderSide(
             width: 0,
@@ -53,24 +53,27 @@ class _TextFieldDoubleState extends State<TextFieldDouble> {
           borderRadius: BorderRadius.circular(5),
         ),
       ),
-      onChanged: (value) {
-        widget.textInputController.text = value.toString();
-        widget.textInputController.selection = TextSelection.fromPosition(
-            TextPosition(offset: widget.textInputController.text.length));
-      },
-      // onSaved: (value) {
-      //   setState(() {
-      //     widget.textInputController.text = value.toString();
-      //     // widget.variable = double.parse(widget.textInputController.text);
-      //     debugPrint(widget.textInputController.text);
-      //   });
-      // },
-      onEditingComplete: () {
+      onFieldSubmitted: (value) {
         setState(() {
+          widget.textInputController.text = value.toString();
+          // widget.textInputController.selection = TextSelection.fromPosition(
+          //     TextPosition(offset: widget.textInputController.text.length));
+          // debugPrint(widget.textInputController.text);
+        });
+      },
+      onSaved: (value) {
+        setState(() {
+          widget.textInputController.text = value.toString();
           // widget.variable = double.parse(widget.textInputController.text);
           debugPrint(widget.textInputController.text);
         });
       },
+      // onEditingComplete: () {
+      //   setState(() {
+      //     // widget.variable = double.parse(widget.textInputController.text);
+      //     debugPrint(widget.textInputController.text);
+      //   });
+      // },
     );
   }
 }
