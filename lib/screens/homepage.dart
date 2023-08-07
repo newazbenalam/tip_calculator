@@ -5,19 +5,20 @@ import 'package:tip_calculator/widgets/text_field.dart';
 class HomePage extends StatefulWidget {
   HomePage({super.key, required this.title});
   final String title;
-  static double totalBill = 0.00;
-  final TextEditingController textInputControllerTotalBill =
-      TextEditingController();
-  final TextEditingController textInputControllerPercentage =
-      TextEditingController();
-  final TextEditingController textInputControllerPeople =
-      TextEditingController();
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final textInputControllerTotalBill = TextEditingController();
+
+  final textInputControllerPercentage = TextEditingController();
+
+  final textInputControllerPeople = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,49 +44,52 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(14),
               width: double.infinity,
               decoration: const BoxDecoration(color: containerColor),
-              child: Column(
-                children: [
-                  Text(
-                    "Total Bill",
-                    style: hintTitleStyle,
-                  ),
-                  Text(
-                    "\$ ${HomePage.totalBill}",
-                    style: h1,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Total Persons",
-                            style: hintTitleStyle,
-                          ),
-                          Text(
-                            "05",
-                            style: h2,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "Tip Amount",
-                            style: hintTitleStyle,
-                          ),
-                          Text(
-                            "\$ 20.0",
-                            style: h2,
-                            textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    Text(
+                      "Total Bill",
+                      style: hintTitleStyle,
+                    ),
+                    Text(
+                      "\$ ${textInputControllerTotalBill.text.isEmpty ? "0.00" : textInputControllerTotalBill.text}",
+                      style: h1,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total Persons",
+                              style: hintTitleStyle,
+                            ),
+                            Text(
+                              "05",
+                              style: h2,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Tip Amount",
+                              style: hintTitleStyle,
+                            ),
+                            Text(
+                              "\$ 20.0",
+                              style: h2,
+                              textAlign: TextAlign.right,
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
             Container(
@@ -111,80 +115,67 @@ class _HomePageState extends State<HomePage> {
               flex: 1,
             ),
             Title(title: "Total Bill"),
-            // const SizedBox(
-            //   height: 5,
-            // ),
-            // TextFormField(
-            //   controller: widget.textInputController,
-            //   key: widget.fieldKey,
-            //   keyboardType: TextInputType.number,
-            //   decoration: InputDecoration(
-            //     hintText: "Please enter total bill amount",
-            //     hintStyle: const TextStyle(color: textLightBlack),
-            //     suffixIcon: const Icon(Icons.attach_money),
-            //     filled: true,
-            //     fillColor: containerColor,
-            //     iconColor: textLightBlack,
-            //     border: OutlineInputBorder(
-            //       borderSide: const BorderSide(
-            //         width: 0,
-            //         color: Colors.transparent,
-            //       ),
-            //       borderRadius: BorderRadius.circular(5),
-            //     ),
-            //     enabledBorder: OutlineInputBorder(
-            //       borderSide: const BorderSide(
-            //         width: 0,
-            //         color: Colors.transparent,
-            //       ),
-            //       borderRadius: BorderRadius.circular(5),
-            //     ),
-            //     focusedBorder: OutlineInputBorder(
-            //       borderSide: const BorderSide(
-            //         width: 0,
-            //         color: Colors.transparent,
-            //       ),
-            //       borderRadius: BorderRadius.circular(5),
-            //     ),
-            //   ),
-            //   onChanged: (value) {
-            //     widget.textInputController.text = value.toString();
-            //     widget.textInputController.selection =
-            //         TextSelection.fromPosition(TextPosition(
-            //             offset: widget.textInputController.text.length));
-            //   },
-            //   onSaved: (value) {
-            //     setState(() {
-            //       widget.textInputController.text = value.toString();
-            //       HomePage.totalBill =
-            //           double.parse(widget.textInputController.text);
-            //       debugPrint(widget.textInputController.text);
-            //     });
-            //   },
-            //   onEditingComplete: () {
-            //     setState(() {
-            //       HomePage.totalBill =
-            //           double.parse(widget.textInputController.text);
-            //       debugPrint(widget.textInputController.text);
-            //     });
-            //   },
-            // ),
             TextFieldDouble(
                 title: "Please enter total bill amount",
-                textInputController: widget.textInputControllerTotalBill,
+                textInputController: textInputControllerTotalBill,
                 iconData: Icon(Icons.attach_money)),
             Title(title: "Tip percentage"),
             TextFieldDouble(
                 title: "Please emter tip percentage",
-                textInputController: widget.textInputControllerPercentage,
+                textInputController: textInputControllerPercentage,
                 iconData: Icon(Icons.percent_outlined)),
             Title(title: "Number of people"),
             TextFieldDouble(
               title: "Please enter number of people",
-              textInputController: widget.textInputControllerPeople,
+              textInputController: textInputControllerPeople,
+            ),
+            Row(
+              children: [
+                Expanded(child: actionButton()),
+                SizedBox(
+                  width: 10,
+                ),
+                clearButton(),
+              ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget actionButton() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          formKey.currentState!.validate();
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 45),
+        decoration: BoxDecoration(
+            color: Colors.black87, borderRadius: BorderRadius.circular(10)),
+        alignment: Alignment.center,
+        child: const Text("Calculate", style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+
+  Widget clearButton() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          textInputControllerTotalBill.clear();
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 45),
+        decoration: BoxDecoration(
+            color: clearButtonColor, borderRadius: BorderRadius.circular(10)),
+        alignment: Alignment.center,
+        child: const Text("Clear", style: TextStyle(color: Colors.white)),
       ),
     );
   }
